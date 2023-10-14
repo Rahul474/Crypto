@@ -1,10 +1,12 @@
 import { Container, makeStyles, Typography } from "@material-ui/core";
+import React from "react";
 import Carousel from "./Carousel";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   banner: {
-    backgroundImage: "url(./banner2.jpg)",
+    backgroundImage: "url(./banner.jpg)",
   },
+
   bannerContent: {
     height: 400,
     display: "flex",
@@ -24,11 +26,10 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
   },
-}));
+});
 
-function Banner() {
+const Banner = () => {
   const classes = useStyles();
-
   return (
     <div className={classes.banner}>
       <Container className={classes.bannerContent}>
@@ -41,7 +42,7 @@ function Banner() {
               fontFamily: "Montserrat",
             }}
           >
-            Crypto Monitor
+            Crypto Tracker
           </Typography>
           <Typography
             variant="subtitle2"
@@ -58,6 +59,6 @@ function Banner() {
       </Container>
     </div>
   );
-}
+};
 
 export default Banner;

@@ -2,17 +2,36 @@ import { makeStyles } from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import AliceCarousel from "react-alice-carousel";
+import "react-alice-carousel/lib/alice-carousel.css";
 import { Link } from "react-router-dom";
 import { TrendingCoins } from "../../config/api";
 import { CryptoState } from "../../CryptoContext";
-import { numberWithCommas } from "../CoinsTable";
-
+// import { numberWithCommas } from "../CoinsTable";
+const useStyles = makeStyles((theme) => ({
+  carousel: {
+    height: "50%",
+    display: "flex",
+    alignItems: "center",
+  },
+  carouselItem: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    cursor: "pointer",
+    textTransform: "uppercase",
+    color: "white",
+  },
+}));
+export function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 const Carousel = () => {
   const [trending, setTrending] = useState([]);
   const { currency, symbol } = CryptoState();
 
   const fetchTrendingCoins = async () => {
     const { data } = await axios.get(TrendingCoins(currency));
+
     setTrending(data);
   };
 
@@ -20,22 +39,6 @@ const Carousel = () => {
     fetchTrendingCoins();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currency]);
-
-  const useStyles = makeStyles((theme) => ({
-    carousel: {
-      height: "50%",
-      display: "flex",
-      alignItems: "center",
-    },
-    carouselItem: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      cursor: "pointer",
-      textTransform: "uppercase",
-      color: "white",
-    },
-  }));
 
   const classes = useStyles();
 

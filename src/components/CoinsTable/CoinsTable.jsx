@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Pagination from "@material-ui/lab/Pagination";
+// import Pagination from "@material-ui/lab/Pagination";
 import {
   Container,
   createTheme,
@@ -17,14 +17,29 @@ import {
   Paper,
 } from "@material-ui/core";
 import axios from "axios";
-import { CoinList } from "../config/api";
-import { useHistory } from "react-router-dom";
-import { CryptoState } from "../CryptoContext";
+import { CoinList } from "../../config/api";
+import { useNavigate } from "react-router-dom";
+import { CryptoState } from "../../CryptoContext";
+import { Pagination } from "@material-ui/lab";
 
 export function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
-
+const useStyles = makeStyles({
+  row: {
+    backgroundColor: "#16171a",
+    cursor: "pointer",
+    "&:hover": {
+      backgroundColor: "#131111",
+    },
+    fontFamily: "Montserrat",
+  },
+  pagination: {
+    "& .MuiPaginationItem-root": {
+      color: "gold",
+    },
+  },
+});
 export default function CoinsTable() {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -33,24 +48,8 @@ export default function CoinsTable() {
 
   const { currency, symbol } = CryptoState();
 
-  const useStyles = makeStyles({
-    row: {
-      backgroundColor: "#16171a",
-      cursor: "pointer",
-      "&:hover": {
-        backgroundColor: "#131111",
-      },
-      fontFamily: "Montserrat",
-    },
-    pagination: {
-      "& .MuiPaginationItem-root": {
-        color: "gold",
-      },
-    },
-  });
-
   const classes = useStyles();
-  const history = useHistory();
+  const history = useNavigate();
 
   const darkTheme = createTheme({
     palette: {
@@ -64,8 +63,6 @@ export default function CoinsTable() {
   const fetchCoins = async () => {
     setLoading(true);
     const { data } = await axios.get(CoinList(currency));
-    console.log(data);
-
     setCoins(data);
     setLoading(false);
   };
@@ -128,7 +125,7 @@ export default function CoinsTable() {
                     const profit = row.price_change_percentage_24h > 0;
                     return (
                       <TableRow
-                        onClick={() => history.push(`/coins/${row.id}`)}
+                        onClick={() => history(`/coins/${row.id}`)}
                         className={classes.row}
                         key={row.name}
                       >

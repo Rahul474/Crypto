@@ -1,20 +1,19 @@
 import {
   AppBar,
   Container,
+  createTheme,
+  makeStyles,
   MenuItem,
   Select,
+  ThemeProvider,
   Toolbar,
   Typography,
 } from "@material-ui/core";
-import {
-  createTheme,
-  makeStyles,
-  ThemeProvider,
-} from "@material-ui/core/styles";
-import { useHistory } from "react-router-dom";
-import { CryptoState } from "../CryptoContext";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { CryptoState } from "../../CryptoContext";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   title: {
     flex: 1,
     color: "gold",
@@ -22,22 +21,20 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     cursor: "pointer",
   },
-}));
-
-const darkTheme = createTheme({
-  palette: {
-    primary: {
-      main: "#fff",
-    },
-    type: "dark",
-  },
 });
 
-function Header() {
+const Header = () => {
   const classes = useStyles();
+  const navigate = useNavigate();
+  const darkTheme = createTheme({
+    palette: {
+      primary: {
+        main: "#fff",
+      },
+      type: "dark",
+    },
+  });
   const { currency, setCurrency } = CryptoState();
-
-  const history = useHistory();
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -45,19 +42,16 @@ function Header() {
         <Container>
           <Toolbar>
             <Typography
-              onClick={() => history.push(`/`)}
-              variant="h6"
               className={classes.title}
+              onClick={() => navigate("/")}
+              variant="h6"
             >
-              Crypto Monitor
+              Crypto Tracker
             </Typography>
-            {/* <Button color="inherit">Login</Button> */}
             <Select
               variant="outlined"
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
+              style={{ width: 100, height: 40, marginRight: 15 }}
               value={currency}
-              style={{ width: 100, height: 40, marginLeft: 15 }}
               onChange={(e) => setCurrency(e.target.value)}
             >
               <MenuItem value={"USD"}>USD</MenuItem>
@@ -68,6 +62,6 @@ function Header() {
       </AppBar>
     </ThemeProvider>
   );
-}
+};
 
 export default Header;
